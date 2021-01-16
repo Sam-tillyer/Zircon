@@ -712,7 +712,7 @@ namespace Server.Envir
             result.LastPrice = info.LastPrice;
 
             long average = 0;
-            int count = 0;
+            long count = 0;
 
             foreach (int value in info.Average)
             {

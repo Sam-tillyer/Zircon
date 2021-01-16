@@ -1454,6 +1454,7 @@ namespace Server.Models
                             history.Delete();
                             c++;
                         }
+                        SEnvir.AuctionHistoryInfoList.Binding.Clear();
                         Connection.ReceiveChat($"{c} Histories reset.", MessageType.System);
                         break;
                     case "GOLDBOT":
