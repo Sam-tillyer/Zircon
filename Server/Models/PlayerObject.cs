@@ -17774,11 +17774,12 @@ namespace Server.Models
                 BuffRemove(BuffType.Defiance);
                 ChangeHP(-(CurrentHP / 2));
             }
-            int value = 2 + magic.Level;
+            int value = 4 + magic.Level * 6;
 
             Stats buffStats = new Stats
             {
-                [Stat.DCPercent] = value,
+                [Stat.MinDC] = value,
+                [Stat.MaxDC] = value,
             };
 
             BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
@@ -18398,11 +18399,11 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MCPercent] = 2 + magic.Level,
-                [Stat.SCPercent] = 2 + magic.Level
+                [Stat.MaxMC] = 5 + magic.Level,
+                [Stat.MaxSC] = 5 + magic.Level
             };
 
-            /*if (stats[Stat.FireAffinity] > 0)
+            if (stats[Stat.FireAffinity] > 0)
             {
                 buffStats[Stat.FireAttack] = 5 + magic.Level;
                 buffStats[Stat.MaxMC] = 0;
@@ -18450,7 +18451,7 @@ namespace Server.Models
                 buffStats[Stat.MaxMC] = 0;
                 buffStats[Stat.MaxSC] = 0;
             }
-        */
+
 
             ob.BuffAdd(BuffType.ElementalSuperiority, TimeSpan.FromSeconds(magic.GetPower() + GetSC() * 2), buffStats, true, false, TimeSpan.Zero);
 
@@ -18462,7 +18463,7 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.DCPercent] = 2 + magic.Level
+                [Stat.MaxDC] = 5 + magic.Level
             };
 
             ob.BuffAdd(BuffType.BloodLust, TimeSpan.FromSeconds((magic.GetPower() + GetSC() * 2)), buffStats, true, false, TimeSpan.Zero);

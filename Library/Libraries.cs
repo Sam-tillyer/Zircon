@@ -336,11 +336,6 @@ namespace Library
             [LibraryFile.ShandaMir2_Objects23] = @"Data\Map Data\ShandaMir2\Objects23.Zl",
             [LibraryFile.ShandaMir2_Objects24] = @"Data\Map Data\ShandaMir2\Objects24.Zl",
             [LibraryFile.ShandaMir2_Objects25] = @"Data\Map Data\ShandaMir2\Objects25.Zl",
-            [LibraryFile.ShandaMir2_Objects26] = @"Data\Map Data\ShandaMir2\Objects26.Zl",
-            [LibraryFile.ShandaMir2_Objects27] = @"Data\Map Data\ShandaMir2\Objects27.Zl",
-            [LibraryFile.ShandaMir2_Objects28] = @"Data\Map Data\ShandaMir2\Objects28.Zl",
-            [LibraryFile.ShandaMir2_Objects29] = @"Data\Map Data\ShandaMir2\Objects29.Zl",
-            [LibraryFile.ShandaMir2_Objects30] = @"Data\Map Data\ShandaMir2\Objects30.Zl",
 
             [LibraryFile.WemadeMir3_Animationsc] = @"Data\Map Data\Animationsc.Zl",
             [LibraryFile.WemadeMir3_Cliffsc] = @"Data\Map Data\Cliffsc.Zl",
@@ -972,11 +967,6 @@ namespace Library
         ShandaMir2_Objects23,
         ShandaMir2_Objects24,
         ShandaMir2_Objects25,
-        ShandaMir2_Objects26,
-        ShandaMir2_Objects27,
-        ShandaMir2_Objects28,
-        ShandaMir2_Objects29,
-        ShandaMir2_Objects30,
 
         WemadeMir3_Animationsc,
         WemadeMir3_Cliffsc,
