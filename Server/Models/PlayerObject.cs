@@ -17774,12 +17774,11 @@ namespace Server.Models
                 BuffRemove(BuffType.Defiance);
                 ChangeHP(-(CurrentHP / 2));
             }
-            int value = 4 + magic.Level * 6;
+            int value = 2 + magic.Level;
 
             Stats buffStats = new Stats
             {
-                [Stat.MinDC] = value,
-                [Stat.MaxDC] = value,
+                [Stat.DCPercent] = value
             };
 
             BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
@@ -18399,8 +18398,8 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MaxMC] = 5 + magic.Level,
-                [Stat.MaxSC] = 5 + magic.Level
+                [Stat.MCPercent] = 2 + magic.Level,
+                [Stat.SCPercent] = 2 + magic.Level
             };
 
             if (stats[Stat.FireAffinity] > 0)
@@ -18463,7 +18462,7 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MaxDC] = 5 + magic.Level
+                [Stat.DCPercent] = 2 + magic.Level
             };
 
             ob.BuffAdd(BuffType.BloodLust, TimeSpan.FromSeconds((magic.GetPower() + GetSC() * 2)), buffStats, true, false, TimeSpan.Zero);
