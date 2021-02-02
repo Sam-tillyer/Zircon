@@ -17772,16 +17772,19 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.Defiance))
             {
                 BuffRemove(BuffType.Defiance);
-                ChangeHP(-(CurrentHP / 2));
             }
-            int value = 2 + magic.Level;
+            int value = magic.Level * 9 + 13;
 
             Stats buffStats = new Stats
             {
-                [Stat.DCPercent] = value
-            };
+                [Stat.DCPercent] = value,
+                [Stat.Health] =- Stats[Stat.Health] / 2
+        };
 
-            BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+            BuffAdd(BuffType.Might, TimeSpan.FromSeconds(magic.Level * 4 + 6), buffStats, false, false, TimeSpan.Zero);
+
+            magic.Cooldown = SEnvir.Now.AddSeconds(90);
+            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 90000 });
 
             LevelMagic(magic);
         }
@@ -18071,7 +18074,7 @@ namespace Server.Models
 
             Stats buffStats = new Stats
             {
-                [Stat.MagicShield] = 50
+                [Stat.MagicShield] = 25
             };
 
             BuffAdd(BuffType.MagicShield, TimeSpan.FromSeconds(30 + magic.Level * 20 + GetMC() / 2 + Stats[Stat.PhantomAttack] * 2), buffStats, true, false, TimeSpan.Zero);
@@ -18699,6 +18702,20 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.StrengthOfFaith))
                 ob.Magics.Add(Magics[MagicType.StrengthOfFaith]);
 
+            if (ob.PetOwner.Buffs.Any(x => x.Type == BuffType.Resilience))
+                ob.Magics.Add(Magics[MagicType.Resilience]);
+
+            if (Buffs.Any(x => x.Type == BuffType.MagicResistance))
+                ob.Magics.Add(Magics[MagicType.MagicResistance]);
+
+            if (Buffs.Any(x => x.Type == BuffType.BloodLust))
+                ob.Magics.Add(Magics[MagicType.BloodLust]);
+
+            if (Buffs.Any(x => x.Type == BuffType.LifeSteal))
+                ob.Magics.Add(Magics[MagicType.LifeSteal]);
+
+            if (Buffs.Any(x => x.Type == BuffType.ElementalSuperiority))
+                ob.Magics.Add(Magics[MagicType.ElementalSuperiority]);
 
             if (magic.Info.Magic == MagicType.SummonDemonicCreature && Magics.TryGetValue(MagicType.DemonicRecovery, out UserMagic demonRecovery))
                 ob.Magics.Add(demonRecovery);
