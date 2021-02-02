@@ -17773,7 +17773,7 @@ namespace Server.Models
             {
                 BuffRemove(BuffType.Defiance);
             }
-            int value = magic.Level * 9 + 13;
+            int value = magic.Level * 7 + 19;
 
             Stats buffStats = new Stats
             {
