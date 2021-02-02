@@ -1535,15 +1535,21 @@ namespace Server.Models
                     case "LEVELSKILL":
                         if (!Character.Account.TempAdmin) return;
                         if (parts.Length < 3) return;
+
                         if (parts.Length == 3) player = this; //@levelskill healing 5
-                        else player = SEnvir.GetPlayerByCharacter(parts[1]); //@levelskill ryan healing 5
+                        else player = SEnvir.GetPlayerByCharacter(parts[1]); //@levelskill Hwarang healing 5
+
                         if (player == null) return;
+
                         MagicInfo tinfo = SEnvir.MagicInfoList.Binding.FirstOrDefault(m => m.Name.Replace(" ", "").ToUpper().Equals(parts[2].ToUpper()));
                         if (tinfo == null) return;
+
+
                         if (int.TryParse(parts[3], out int tlevel))
                         {
                             player.Magics[tinfo.Magic].Level = tlevel;
                             player.Magics[tinfo.Magic].Experience = 0;
+
                             player.Enqueue(new S.MagicLeveled { InfoIndex = tinfo.Index, Level = tlevel, Experience = 0 });
                             player.RefreshStats();
                             Connection.ReceiveChat(string.Format("{0}'s {1} has been leveled to {2}", parts[1], parts[2], parts[3]), MessageType.System);
@@ -6301,6 +6307,13 @@ namespace Server.Models
 
                     if (SEnvir.Now < UseItemTime || Horse != HorseType.None) return;
 
+                    MagicInfo info = SEnvir.MagicInfoList.Binding.First(x => x.Index == item.Info.Shape);
+                    bool foundmagic = Magics.TryGetValue(info.Magic, out magic);
+                    if (foundmagic)
+                    {
+                        if (magic.Level >= SharedConfig.MAGIC_LEVEL_CAP) return; //MAGIC LEVEL CAP
+                    }
+
                     if (SEnvir.Random.Next(100) >= item.CurrentDurability)
                     {
                         Connection.ReceiveChat(Connection.Language.LearnBookFailed, MessageType.System);
@@ -6312,12 +6325,9 @@ namespace Server.Models
                     }
 
 
-
-                    MagicInfo info = SEnvir.MagicInfoList.Binding.First(x => x.Index == item.Info.Shape);
-
-                    if (Magics.TryGetValue(info.Magic, out magic))
+                    if (foundmagic)
                     {
-                        int rate = (magic.Level - 2) * 500;
+                        int rate = (magic.Level - 2) * 50;
 
                         magic.Experience++;
 
@@ -17754,7 +17764,6 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.Might))
             {
                 BuffRemove(BuffType.Might);
-                ChangeHP(-(CurrentHP / 2));
             }
 
             Stats buffStats = new Stats
@@ -17762,7 +17771,7 @@ namespace Server.Models
                 [Stat.Defiance] = 1,
             };
 
-            BuffAdd(BuffType.Defiance, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+            BuffAdd(BuffType.Defiance, TimeSpan.MaxValue, buffStats, false, false, TimeSpan.FromSeconds(2));
 
             LevelMagic(magic);
         }

@@ -81,6 +81,8 @@ namespace Server.Envir.Translations
         public override string LearnBookSuccess { get; set; } = "Congratulations, You have successfully learned {0}.";
         public override string LearnBook4Failed { get; set; } = "Failed to learn level {0} skill.";
         public override string LearnBook4Success { get; set; } = "Congratulations, You have successfully learned level {1} {0}.";
+        public override string LearnBook5Failed { get; set; } = "Failed to learn level 5 skill.";
+        public override string LearnBook5Success { get; set; } = "Congratulations, You have successfully learned level 5 {0}.";
         public override string StorageSafeZone { get; set; } = "You cannot access storage outside of SafeZone.";
         public override string GuildStoragePermission { get; set; } = "You do no have the permissions to take from the guild storage";
         public override string GuildStorageSafeZone { get; set; } = "You cannot use guild storage unless you are in a safe zone";

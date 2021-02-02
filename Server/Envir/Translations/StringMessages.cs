@@ -88,6 +88,8 @@ namespace Server.Envir
         public abstract string LearnBookSuccess { get; set; }
         public abstract string LearnBook4Failed { get; set; }
         public abstract string LearnBook4Success { get; set; }
+        public abstract string LearnBook5Failed { get; set; }
+        public abstract string LearnBook5Success { get; set; }
         public abstract string StorageSafeZone { get; set; }
         public abstract string GuildStoragePermission { get; set; }
         public abstract string GuildStorageSafeZone { get; set; }
