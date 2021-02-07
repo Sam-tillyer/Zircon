@@ -628,6 +628,7 @@ namespace Server.Models
             BuffRemove(BuffType.Castle);
             BuffRemove(BuffType.Veteran);
             BuffRemove(BuffType.ClearRing);
+            BuffRemove(BuffType.ElementalHurricane);
 
             if (GroupMembers != null) GroupLeave();
 
@@ -1685,6 +1686,12 @@ namespace Server.Models
                         if (!Character.Account.TempAdmin) return;
                         SEnvir.IPBlocks.Clear();
                         break;
+                    case "SAFEDEATH":
+                        if (!Character.Account.TempAdmin) return;
+
+                        SEnvir.SafeDeath = !SEnvir.SafeDeath;
+                        Connection.ReceiveChat($"Safe Deaths [{SEnvir.SafeDeath}]", MessageType.System);
+                        break;
                     case "REBOOT":
                         if (!Character.Account.TempAdmin) return;
                         time = Time.Now;
@@ -2660,6 +2667,14 @@ namespace Server.Models
                 case Stat.MaxMC:
                 case Stat.MaxSC:
                     Character.HermitStats[stat] += 2 + Character.SpentPoints / 10;
+                    break;
+                case Stat.CriticalChance:
+                    if (Character.HermitStats[Stat.CriticalChance] >= 5) return;
+                    Character.HermitStats[Stat.CriticalChance] += 1;
+                    break;
+                case Stat.HealingCap:
+                    if (Character.HermitStats[Stat.HealingCap] >= 5) return;
+                    Character.HermitStats[Stat.HealingCap] += 30;
                     break;
                 case Stat.MaxAC:
                     Character.HermitStats[Stat.MinAC] += 2;
@@ -8378,6 +8393,7 @@ namespace Server.Models
                 case BuffType.Ranking:
                 case BuffType.Developer:
                 case BuffType.Castle:
+                case BuffType.ElementalHurricane:
                     info.IsTemporary = true;
                     break;
             }
@@ -12921,13 +12937,15 @@ namespace Server.Models
                 case MagicType.Defiance:
                 case MagicType.Beckon:
                 case MagicType.Might:
+                case MagicType.IronSkin:
                 case MagicType.ReflectDamage:
                 case MagicType.Fetter:
                 case MagicType.SwiftBlade:
                 case MagicType.Endurance:
                 case MagicType.Assault:
                 case MagicType.SeismicSlam:
-
+                case MagicType.InnerRage:
+                case MagicType.Invincibility:
 
                 case MagicType.FireBall:
                 case MagicType.IceBolt:
@@ -13057,6 +13075,17 @@ namespace Server.Models
                         return;
                     }
                     break;
+                case MagicType.ElementalHurricane:
+                    int cost = magic.Cost;
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                        cost = 0;
+
+                    if (cost > CurrentMP)
+                    {
+                        Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
+                        return;
+                    }
+                    break;
                 default:
                     Enqueue(new S.UserLocation { Direction = Direction, Location = CurrentLocation });
                     return;
@@ -13127,8 +13156,11 @@ namespace Server.Models
                     break;
                 case MagicType.Defiance:
                 case MagicType.Might:
+                case MagicType.IronSkin:
+                case MagicType.InnerRage:
                 case MagicType.ReflectDamage:
                 case MagicType.Endurance:
+                case MagicType.Invincibility:
                     ob = null;
                     p.Direction = MirDirection.Down;
 
@@ -13857,6 +13889,18 @@ namespace Server.Models
                                 new List<UserMagic> { magic },
                                 target));
                         }
+                    }
+                    break;
+                case MagicType.ElementalHurricane:
+                    ob = null;
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                    {
+                        BuffRemove(BuffType.ElementalHurricane);
+                    }
+                    else
+                    {
+                        buff = BuffAdd(BuffType.ElementalHurricane, TimeSpan.MaxValue, null, true, false, TimeSpan.FromSeconds(1));
+                        buff.TickTime = TimeSpan.FromMilliseconds(500);
                     }
                     break;
 
@@ -14807,6 +14851,11 @@ namespace Server.Models
                     }
                     ChangeMP(-magic.Cost);
                     break;
+                case MagicType.ElementalHurricane:
+                    if (Buffs.Any(x => x.Type == BuffType.ElementalHurricane))
+                        break;
+                    ChangeMP(-(Stats[Stat.Mana] * magic.Cost / 1000));
+                    break;
                 default:
                     ChangeMP(-magic.Cost);
                     break;
@@ -14842,7 +14891,10 @@ namespace Server.Models
                     break;
                 case MagicType.Defiance:
                 case MagicType.Might:
+                case MagicType.IronSkin:
+                case MagicType.InnerRage:
                 case MagicType.ReflectDamage:
+                case MagicType.Invincibility:
 
                 case MagicType.Repulsion:
                 case MagicType.ElectricShock:
@@ -15565,6 +15617,12 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.Might) && Magics.TryGetValue(MagicType.Might, out magic))
                 LevelMagic(magic);
 
+            if (Buffs.Any(x => x.Type == BuffType.IronSkin) && Magics.TryGetValue(MagicType.Might, out magic))
+                LevelMagic(magic);
+
+            if (Buffs.Any(x => x.Type == BuffType.InnerRage) && Magics.TryGetValue(MagicType.InnerRage, out magic))
+                LevelMagic(magic);
+
             decimal lifestealAmount = damage * Stats[Stat.LifeSteal] / 100M;
 
 
@@ -15791,6 +15849,11 @@ namespace Server.Models
                         canStuck = false;
                         break;
 
+                    case MagicType.ElementalHurricane:
+                        bool hasStone = Equipment[(int)EquipmentSlot.Amulet]?.Info.ItemType == ItemType.DarkStone;
+                        element = hasStone ? Equipment[(int)EquipmentSlot.Amulet].Info.Stats.GetAffinityElement() : Element.None;
+                        power += magic.GetPower() + GetMC();
+                        break;
                     case MagicType.ExplosiveTalisman:
                         element = Element.Dark;
                         power += magic.GetPower() + GetSC();
@@ -15918,6 +15981,7 @@ namespace Server.Models
                     case MagicType.BlowEarth:
                     case MagicType.FrozenEarth:
                     case MagicType.GreaterFrozenEarth:
+                    case MagicType.ElementalHurricane:
                         if (!primary)
                             power = (int) (power * 0.3F);
                         break;
@@ -16187,7 +16251,7 @@ namespace Server.Models
 
         public override int Attacked(MapObject attacker, int power, Element element, bool canReflect = true, bool ignoreShield = false, bool canCrit = true, bool canStruck = true)
         {
-            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange)) return 0;
+            if (attacker?.Node == null || power == 0 || Dead || attacker.CurrentMap != CurrentMap || !Functions.InRange(attacker.CurrentLocation, CurrentLocation, Config.MaxViewRange) || Stats[Stat.Invincibility] > 0) return 0;
 
             UserMagic magic;
             if (element != Element.None)
@@ -16379,6 +16443,9 @@ namespace Server.Models
             if (Magics.TryGetValue(MagicType.AdventOfDevil, out magic) && element != Element.None)
                 LevelMagic(magic);
 
+            if (Buffs.Any(x => x.Type == BuffType.Invincibility) && Magics.TryGetValue(MagicType.Invincibility, out magic))
+                LevelMagic(magic);
+
             return power;
         }
 
@@ -16542,6 +16609,12 @@ namespace Server.Models
                     case MagicType.Might:
                         MightEnd(magic);
                         break;
+                    case MagicType.IronSkin:
+                        IronSkinEnd(magic);
+                        break;
+                    case MagicType.InnerRage:
+                        InnerRageEnd(magic);
+                        break;
                     case MagicType.ReflectDamage:
                         ReflectDamageEnd(magic);
                         break;
@@ -16559,6 +16632,9 @@ namespace Server.Models
                             Attack(cell.Objects[i], magics, true, 0);
                         }
 
+                        break;
+                    case MagicType.Invincibility:
+                        InvincibilityEnd(magic);
                         break;
 
                     #endregion
@@ -16593,6 +16669,7 @@ namespace Server.Models
                     case MagicType.IceStorm:
                     case MagicType.DragonTornado:
                     case MagicType.Asteroid:
+                    case MagicType.ElementalHurricane:
                         AttackCell(magics, (Cell)data[1], true);
                         break;
                     case MagicType.ChainLightning:
@@ -16973,7 +17050,7 @@ namespace Server.Models
                 }
             }
 
-            if (Stats[Stat.Rebirth] > 0 && (LastHitter == null || LastHitter.Race != ObjectType.Player))
+            if (!SEnvir.SafeDeath && (Stats[Stat.Rebirth] > 0 && (LastHitter == null || LastHitter.Race != ObjectType.Player)))
             {
                 //Level = Math.Max(Level - Stats[Stat.Rebirth] * 3, 1);
                 decimal expbonus = Experience;
@@ -17781,16 +17858,70 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.Defiance))
             {
                 BuffRemove(BuffType.Defiance);
+                ChangeHP(-(CurrentHP / 2));
+            }
+
+            if (magic.Level >= 4) {
+
+                int value = 6 + magic.Level; 
+
+                Stats buffStats = new Stats
+                {
+                    [Stat.DCPercent] = value,
+                };
+
+                BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+
+                LevelMagic(magic);
+            }
+            else if (magic.Level <= 3) {
+
+                int value = 4 + magic.Level * 6;
+
+                Stats buffStats = new Stats
+                {
+                [Stat.MinDC] = value,
+                [Stat.MaxDC] = value,
+                };
+
+                BuffAdd(BuffType.Might, TimeSpan.FromSeconds(60 + magic.Level * 30), buffStats, false, false, TimeSpan.Zero);
+
+                LevelMagic(magic);
+            }
+        }
+
+        public void IronSkinEnd(UserMagic magic)
+        {
+            int value = magic.Level * 7 + 19;
+
+            Stats buffStats = new Stats
+            {
+                [Stat.MaxAC] = value,
+            };
+
+            BuffAdd(BuffType.IronSkin, TimeSpan.FromSeconds(magic.Level * 4 + 6), buffStats, false, false, TimeSpan.Zero);
+
+            magic.Cooldown = SEnvir.Now.AddSeconds(90);
+            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 90000 });
+
+            LevelMagic(magic);
+        }
+
+        public void InnerRageEnd(UserMagic magic)
+        {
+            if (Buffs.Any(x => x.Type == BuffType.Defiance))
+            {
+                BuffRemove(BuffType.Defiance);
             }
             int value = magic.Level * 7 + 19;
 
             Stats buffStats = new Stats
             {
                 [Stat.DCPercent] = value,
-                [Stat.Health] =- Stats[Stat.Health] / 2
-        };
+                [Stat.Health] = -Stats[Stat.Health] / 2
+            };
 
-            BuffAdd(BuffType.Might, TimeSpan.FromSeconds(magic.Level * 4 + 6), buffStats, false, false, TimeSpan.Zero);
+            BuffAdd(BuffType.InnerRage, TimeSpan.FromSeconds(magic.Level * 4 + 6), buffStats, false, false, TimeSpan.Zero);
 
             magic.Cooldown = SEnvir.Now.AddSeconds(90);
             Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 90000 });
@@ -17805,15 +17936,26 @@ namespace Server.Models
             LevelMagic(magic);
         }
 
+        public void InvincibilityEnd(UserMagic magic)
+        {
+            Stats buffStats = new Stats
+            {
+                [Stat.Invincibility] = 1,
+            };
+
+            BuffAdd(BuffType.Invincibility, TimeSpan.FromSeconds(5 + magic.Level), buffStats, false, false, TimeSpan.Zero);
+
+            LevelMagic(magic);
+        }
 
         public void ReflectDamageEnd(UserMagic magic)
         {
             Stats buffStats = new Stats
             {
-                [Stat.ReflectDamage] = 5 + magic.Level * 3,
+                [Stat.ReflectDamage] = 100,
             };
 
-            BuffAdd(BuffType.ReflectDamage, TimeSpan.FromSeconds(15 + magic.Level * 10), buffStats, false, false, TimeSpan.Zero);
+            BuffAdd(BuffType.ReflectDamage, TimeSpan.FromSeconds(magic.Level +3), buffStats, false, false, TimeSpan.Zero);
 
             LevelMagic(magic);
         }

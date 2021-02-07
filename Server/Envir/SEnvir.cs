@@ -596,6 +596,8 @@ namespace Server.Envir
 
         public static List<SpawnInfo> Spawns = new List<SpawnInfo>();
 
+        public static bool SafeDeath;
+
         private static float _DayTime;
         public static float DayTime
         {
@@ -1699,7 +1701,7 @@ namespace Server.Envir
 
             return item;
         }
-        public static UserItem CreateDropItem(ItemCheck check, int chance = 15)
+        public static UserItem CreateDropItem(ItemCheck check, int chance = 2)
         {
             UserItem item = CreateDropItem(check.Info, chance);
 

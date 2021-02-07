@@ -42,9 +42,9 @@ namespace Client.Scenes.Views
         #endregion
 
         public CharacterDialog()
-        { 
+        {
             HasTitle = false;
-            SetClientSize(new Size(266, 371));
+            SetClientSize(new Size(266, 400));
 
 
             TabControl = new DXTabControl
@@ -108,7 +108,7 @@ namespace Client.Scenes.Views
                 ForeColour = Color.FromArgb(255, 206, 148),
                 Outline = false,
                 Parent = namePanel,
-                Location = new Point(0, CharacterNameLabel.Size.Height+ GuildNameLabel.Size.Height - 4),
+                Location = new Point(0, CharacterNameLabel.Size.Height + GuildNameLabel.Size.Height - 4),
                 DrawFormat = TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter
             };
 
@@ -136,7 +136,7 @@ namespace Client.Scenes.Views
                 Slot = (int)EquipmentSlot.Weapon,
                 GridType = GridType.Equipment,
             };
-            cell.BeforeDraw += (o, e) => Draw((DXItemCell) o, 35);
+            cell.BeforeDraw += (o, e) => Draw((DXItemCell)o, 35);
 
             Grid[(int)EquipmentSlot.Armour] = cell = new DXItemCell
             {
@@ -259,7 +259,7 @@ namespace Client.Scenes.Views
             };
             cell.BeforeDraw += (o, e) => Draw((DXItemCell)o, 104);
 
-                     
+
             Grid[(int)EquipmentSlot.Shoes] = cell = new DXItemCell
             {
                 Location = new Point(95, 300),
@@ -331,7 +331,7 @@ namespace Client.Scenes.Views
             ShowHelmetBox.Location = new Point(215 + 39 - ShowHelmetBox.Size.Width, 58 - ShowHelmetBox.Size.Height);
             ShowHelmetBox.MouseClick += (o, e) =>
             {
-                CEnvir.Enqueue(new C.HelmetToggle{ HideHelmet = ShowHelmetBox.Checked});
+                CEnvir.Enqueue(new C.HelmetToggle { HideHelmet = ShowHelmetBox.Checked });
             };
 
             int y = 0;
@@ -570,6 +570,20 @@ namespace Client.Scenes.Views
             label = new DXLabel
             {
                 Parent = StatsTab,
+                Text = "Healing Cap:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
+
+            DisplayStats[Stat.HealingCap] = new DXLabel
+            {
+                Parent = StatsTab,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+            label = new DXLabel
+            {
+                Parent = StatsTab,
                 Text = "Drop Rate:"
             };
             label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
@@ -587,7 +601,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Text = "Pick Up Radius:"
             };
-            label.Location = new Point(StatsTab.Size.Width / 4  - label.Size.Width + 25, y += 20);
+            label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
 
             DisplayStats[Stat.PickUpRadius] = new DXLabel
             {
@@ -639,10 +653,10 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
-            
+
             icon = new DXImageControl
             {
                 Parent = StatsTab,
@@ -658,7 +672,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -677,7 +691,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -696,7 +710,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -715,7 +729,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -734,7 +748,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -753,7 +767,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -767,7 +781,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Text = "E. Adv:"
             };
-            label.Location = new Point( 50  - label.Size.Width, 235);
+            label.Location = new Point(50 - label.Size.Width, 235);
 
 
             icon = new DXImageControl
@@ -804,7 +818,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -823,7 +837,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -842,7 +856,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -861,7 +875,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -880,7 +894,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -949,7 +963,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -968,7 +982,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -987,7 +1001,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -1006,7 +1020,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -1025,7 +1039,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -1044,7 +1058,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -1063,7 +1077,7 @@ namespace Client.Scenes.Views
                 Parent = StatsTab,
                 Location = new Point(icon.Location.X + icon.Size.Width, label.Location.Y + 25),
                 ForeColour = Color.FromArgb(60, 60, 60),
-                Text ="0",
+                Text = "0",
                 Tag = icon,
             };
 
@@ -1095,7 +1109,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "AC:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 25, 15);
+            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 5, 15);
 
             HermitDisplayStats[Stat.MaxAC] = new DXLabel
             {
@@ -1110,7 +1124,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "MR:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 25, 15);
+            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 5, 15);
 
             HermitDisplayStats[Stat.MaxMR] = new DXLabel
             {
@@ -1125,7 +1139,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "DC:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 25, 35);
+            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 5, 35);
 
             HermitDisplayStats[Stat.MaxDC] = new DXLabel
             {
@@ -1140,7 +1154,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "MC:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 25, 35);
+            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 5, 35);
 
             HermitDisplayStats[Stat.MaxMC] = new DXLabel
             {
@@ -1155,7 +1169,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "SC:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 * 3 - label.Size.Width + 25, 35);
+            label.Location = new Point(HermitTab.Size.Width / 4 * 3 - label.Size.Width + 5, 35);
 
             HermitDisplayStats[Stat.MaxSC] = new DXLabel
             {
@@ -1164,13 +1178,41 @@ namespace Client.Scenes.Views
                 ForeColour = Color.White,
                 Text = "0-0"
             };
-            
+
+            label = new DXLabel
+            {
+                Parent = HermitTab,
+                Text = "Critical Chance:"
+            };
+            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 61, 57);
+            HermitDisplayStats[Stat.CriticalChance] = new DXLabel
+            {
+                Parent = HermitTab,
+                Location = new Point(label.Location.X + label.Size.Width - 5, label.Location.Y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = HermitTab,
+                Text = "Healing Cap:"
+            };
+            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 86, 57);
+            HermitDisplayStats[Stat.HealingCap] = new DXLabel
+            {
+                Parent = HermitTab,
+                Location = new Point(label.Location.X + label.Size.Width - 5, label.Location.Y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
             label = new DXLabel
             {
                 Parent = HermitTab,
                 Text = "Health:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4  - label.Size.Width + 25, 55);
+            label.Location = new Point(HermitTab.Size.Width / 4 - label.Size.Width + 22, 77);
 
             HermitDisplayStats[Stat.Health] = new DXLabel
             {
@@ -1185,7 +1227,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "Mana:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 25, 55);
+            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 55, 77);
 
             HermitDisplayStats[Stat.Mana] = new DXLabel
             {
@@ -1195,15 +1237,14 @@ namespace Client.Scenes.Views
                 Text = "0"
             };
 
-
             #region Attack
-            
+
             label = new DXLabel
             {
                 Parent = HermitTab,
                 Text = "E. Att:"
             };
-            label.Location = new Point(50 - label.Size.Width, 90);
+            label.Location = new Point(50 - label.Size.Width, 115);
 
             icon = new DXImageControl
             {
@@ -1346,7 +1387,7 @@ namespace Client.Scenes.Views
                 Parent = HermitTab,
                 Text = "Unspent Points:"
             };
-            label.Location = new Point(HermitTab.Size.Width / 4  * 2- label.Size.Width + 25, 150);
+            label.Location = new Point(HermitTab.Size.Width / 4 * 2 - label.Size.Width + 25, 180);
 
             RemainingLabel = new DXLabel
             {
@@ -1367,7 +1408,7 @@ namespace Client.Scenes.Views
             DXButton but = new DXButton
             {
                 Parent = HermitTab,
-                Location = new Point(50, 180),
+                Location = new Point(50, 225),
                 Label = { Text = "AC" },
                 ButtonType = ButtonType.SmallButton,
                 Size = new Size(80, SmallButtonHeight)
@@ -1448,7 +1489,7 @@ namespace Client.Scenes.Views
             but = new DXButton
             {
                 Parent = HermitTab,
-                Location = new Point(150, but.Location.Y ),
+                Location = new Point(150, but.Location.Y),
                 Label = { Text = "Mana" },
                 ButtonType = ButtonType.SmallButton,
                 Size = new Size(80, SmallButtonHeight)
@@ -1530,7 +1571,7 @@ namespace Client.Scenes.Views
             but = new DXButton
             {
                 Parent = HermitTab,
-                Location = new Point(150, but.Location.Y ),
+                Location = new Point(50, but.Location.Y + 25),
                 Label = { Text = "SC" },
                 ButtonType = ButtonType.SmallButton,
                 Size = new Size(80, SmallButtonHeight)
@@ -1554,11 +1595,37 @@ namespace Client.Scenes.Views
                 }
             };
 
+            but = new DXButton
+            {
+                Parent = HermitTab,
+                Location = new Point(150, but.Location.Y - 50),
+                Label = { Text = "Critical Chance" },
+                ButtonType = ButtonType.SmallButton,
+                Size = new Size(80, SmallButtonHeight)
+            };
+            but.MouseClick += (o, e) =>
+            {
+                if (MapObject.User.HermitPoints == 0) return;
+
+                if (check.Checked)
+                {
+                    DXMessageBox box = new DXMessageBox("Are you sure you want to increase your Critical Chance?", "Hermit Confirmation", DXMessageBoxButtons.YesNo);
+
+                    box.YesButton.MouseClick += (o1, e1) =>
+                    {
+                        CEnvir.Enqueue(new C.Hermit { Stat = Stat.CriticalChance });
+                    };
+                }
+                else
+                {
+                    CEnvir.Enqueue(new C.Hermit { Stat = Stat.CriticalChance });
+                }
+            };
 
             but = new DXButton
             {
                 Parent = HermitTab,
-                Location = new Point(100, but.Location.Y + 25),
+                Location = new Point(150, but.Location.Y + 25),
                 Label = { Text = "Element" },
                 ButtonType = ButtonType.SmallButton,
                 Size = new Size(80, SmallButtonHeight)
@@ -1582,7 +1649,32 @@ namespace Client.Scenes.Views
                 }
             };
 
+            but = new DXButton
+                {
+                    Parent = HermitTab,
+                    Location = new Point(150, but.Location.Y + 25),
+                    Label = { Text = "Healing Cap" },
+                    ButtonType = ButtonType.SmallButton,
+                    Size = new Size(80, SmallButtonHeight)
+                };
+            but.MouseClick += (o, e) =>
+            {
+                if (MapObject.User.HermitPoints == 0) return;
 
+                if (check.Checked)
+                {
+                    DXMessageBox box = new DXMessageBox("Are you sure you want to increase your Healing Cap?", "Hermit Confirmation", DXMessageBoxButtons.YesNo);
+
+                    box.YesButton.MouseClick += (o1, e1) =>
+                    {
+                        CEnvir.Enqueue(new C.Hermit { Stat = Stat.HealingCap });
+                    };
+                }
+                else
+                {
+                    CEnvir.Enqueue(new C.Hermit { Stat = Stat.HealingCap });
+                }
+            };
         }
 
         #region Methods

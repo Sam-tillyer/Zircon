@@ -158,6 +158,12 @@ namespace Client.Scenes.Views
                     case BuffType.Might:
                         icon.Index = 96;
                         break;
+                    case BuffType.IronSkin:
+                        icon.Index = 96;
+                        break;
+                    case BuffType.InnerRage:
+                        icon.Index = 89;
+                        break;
                     case BuffType.ReflectDamage:
                         icon.Index = 98;
                         break;
@@ -215,6 +221,12 @@ namespace Client.Scenes.Views
                         break;
                     case BuffType.Guild:
                         icon.Index = 140;
+                        break;
+                    case BuffType.Invincibility:
+                        icon.Index = 143;
+                        break;
+                    case BuffType.ElementalHurricane:
+                        icon.Index = 98;
                         break;
                     case BuffType.ClearRing:
                         icon.Index = 74;
@@ -289,6 +301,12 @@ namespace Client.Scenes.Views
                     break;
                 case BuffType.Might:
                     text = $"Might\n";
+                    break;
+                case BuffType.IronSkin:
+                    text = $"Iron Skin\n";
+                    break;
+                case BuffType.InnerRage:
+                    text = $"Inner Rage\n";
                     break;
                 case BuffType.Endurance:
                     text = $"Endurance\n";
@@ -385,6 +403,12 @@ namespace Client.Scenes.Views
                     break;
                 case BuffType.Companion:
                     text = $"Companion\n";
+                    break;
+                case BuffType.Invincibility:
+                    text = $"Invincibility\n";
+                    break;
+                case BuffType.ElementalHurricane:
+                    text = $"Elemental Hurricane\n";
                     break;
             }
             

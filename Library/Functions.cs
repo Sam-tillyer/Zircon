@@ -244,6 +244,10 @@ namespace Library
                 case MagicType.ThunderStrike:
                 case MagicType.MirrorImage:
                 case MagicType.Asteroid:
+                    return MirAnimation.Combat2;
+
+                case MagicType.ElementalHurricane:
+                    return MirAnimation.ChannellingStart;
 
                 case MagicType.Heal:
                 case MagicType.PoisonDust:
@@ -291,8 +295,11 @@ namespace Library
 
                 case MagicType.Defiance:
                 case MagicType.Might:
+                case MagicType.IronSkin:
                 case MagicType.ReflectDamage:
                 case MagicType.Fetter:
+                case MagicType.InnerRage:
+                case MagicType.Invincibility:
                     return MirAnimation.Combat15;
 
                 case MagicType.SwiftBlade:

@@ -532,8 +532,6 @@ namespace Client.Scenes.Views
                 Text = "0"
             };
 
-
-
             label = new DXLabel
             {
                 Parent = StatsTab,
@@ -572,6 +570,21 @@ namespace Client.Scenes.Views
             label.Location = new Point(StatsTab.Size.Width / 4 - label.Size.Width + 25, y += 20);
 
             DisplayStats[Stat.CriticalChance] = new DXLabel
+            {
+                Parent = StatsTab,
+                Location = new Point(label.Location.X + label.Size.Width - 5, y),
+                ForeColour = Color.White,
+                Text = "0"
+            };
+
+            label = new DXLabel
+            {
+                Parent = StatsTab,
+                Text = "Healing Cap:"
+            };
+            label.Location = new Point(StatsTab.Size.Width / 4 * 3 - label.Size.Width + 25, y);
+
+            DisplayStats[Stat.HealingCap] = new DXLabel
             {
                 Parent = StatsTab,
                 Location = new Point(label.Location.X + label.Size.Width - 5, y),

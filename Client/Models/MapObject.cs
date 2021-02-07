@@ -237,7 +237,7 @@ namespace Client.Models
         public float Opacity = 1F;
         public Color LightColour = Globals.NoneColour;
 
-        public MirEffect MagicShieldEffect, WraithGripEffect, WraithGripEffect2, AssaultEffect, CelestialLightEffect, LifeStealEffect, SilenceEffect, BlindEffect, AbyssEffect, DragonRepulseEffect, DragonRepulseEffect1,
+        public MirEffect MagicShieldEffect, WraithGripEffect, WraithGripEffect2, AssaultEffect, CelestialLightEffect, LifeStealEffect, SilenceEffect, BlindEffect, AbyssEffect, ChannellingMagicEffect, ChannellingMagicEffect1,
                          RankingEffect, DeveloperEffect, FrostBiteEffect, InfectionEffect, NeutralizeEffect;
 
         public bool CanShowWraithGrip = true;
@@ -623,6 +623,10 @@ namespace Client.Models
                         //Beckon
 
                         //Might
+
+                        //Steel Skin
+                        
+                        //Inner Rage
 
 
                         #region Swift Blade
@@ -2430,7 +2434,7 @@ namespace Client.Models
             List<uint> targets;
 
             if (action.Action != MirAction.Standing)
-                DragonRepulseEnd();
+                ChannellingMagicEnd();
 
             switch (action.Action)
             {
@@ -2452,15 +2456,19 @@ namespace Client.Models
                     break;
                 case MirAction.Standing:
 
-                    if (!VisibleBuffs.Contains(BuffType.DragonRepulse))
+                    bool hasdragonrepulse = VisibleBuffs.Contains(BuffType.DragonRepulse);
+                    bool haselementalhurricane = VisibleBuffs.Contains(BuffType.ElementalHurricane);
+                    if (!hasdragonrepulse && !haselementalhurricane)
                     {
-                        if (DragonRepulseEffect != null)
-                            DragonRepulseEnd();
+                        if (ChannellingMagicEffect != null)
+                            ChannellingMagicEnd();
                         break;
                     }
 
-                    if (DragonRepulseEffect == null)
-                        DragonRepulseCreate();
+                    if (ChannellingMagicEffect == null)
+                        ChannellingMagicCreate();
+                    else if (haselementalhurricane && ChannellingMagicEffect != null)
+                        ChannellingMagicEffect.Direction = Direction;
 
                     break;
                 case MirAction.Pushed:
@@ -2781,9 +2789,9 @@ namespace Client.Models
 
                         #endregion
 
-                        #region Defiance
+                        #region Defiance, Invincibility
 
-                        case MagicType.Defiance:
+                        case MagicType.Invincibility:
                             Effects.Add(new MirEffect(40, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
                             {
                                 Blend = true,
@@ -2822,6 +2830,31 @@ namespace Client.Models
 
                         #endregion
 
+                        #region Iron Skin
+
+                        case MagicType.IronSkin:
+                            Effects.Add(new MirEffect(60, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            DXSoundManager.Play(SoundIndex.DragonRise); //Same file as Beckon
+                            break;
+
+                        #endregion
+
+                        #region Inner Rage
+
+                        case MagicType.InnerRage:
+                            Effects.Add(new MirEffect(60, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            DXSoundManager.Play(SoundIndex.DragonRise); //Same file as Beckon
+                            break;
+
+                        #endregion
                         #region Lightning Beam
 
                         case MagicType.SeismicSlam:
@@ -4544,26 +4577,77 @@ namespace Client.Models
             NeutralizeEffect = null;
         }
 
-        public void DragonRepulseCreate()
+        public void ChannellingMagicCreate()
         {
-            DragonRepulseEffect = new MirEffect(1011, 4, TimeSpan.FromMilliseconds(150), LibraryFile.MagicEx4, 0, 0, Globals.NoneColour)
+            if (VisibleBuffs.Contains(BuffType.DragonRepulse))
             {
-                Target = this,
-                Loop = true,
-            };
-            DragonRepulseEffect1 = new MirEffect(1031, 4, TimeSpan.FromMilliseconds(150), LibraryFile.MagicEx4, 80, 80, Globals.LightningColour)
+                ChannellingMagicEffect = new MirEffect(1011, 4, TimeSpan.FromMilliseconds(150), LibraryFile.MagicEx4, 0, 0, Globals.NoneColour)
+                {
+                    Target = this,
+                    Loop = true,
+                };
+                ChannellingMagicEffect1 = new MirEffect(1031, 4, TimeSpan.FromMilliseconds(150), LibraryFile.MagicEx4, 80, 80, Globals.LightningColour)
+                {
+                    Blend = true,
+                    Target = this,
+                    Loop = true,
+                };
+            }
+            else if (VisibleBuffs.Contains(BuffType.ElementalHurricane))
             {
-                Blend = true,
-                Target = this,
-                Loop = true,
-            };
+                if (Config.DrawEffects && Race != ObjectType.Monster)
+                {
+                    Color attackColour = Globals.NoneColour;
+                    switch (AttackElement)
+                    {
+                        case Element.Fire:
+                            attackColour = Globals.FireColour;
+                            break;
+                        case Element.Ice:
+                            attackColour = Globals.IceColour;
+                            break;
+                        case Element.Lightning:
+                            attackColour = Globals.LightningColour;
+                            break;
+                        case Element.Wind:
+                            attackColour = Globals.WindColour;
+                            break;
+                        case Element.Holy:
+                            attackColour = Globals.HolyColour;
+                            break;
+                        case Element.Dark:
+                            attackColour = Globals.DarkColour;
+                            break;
+                        case Element.Phantom:
+                            attackColour = Globals.PhantomColour;
+                            break;
+                    }
+
+                    ChannellingMagicEffect = new MirEffect(370, 4, TimeSpan.FromMilliseconds(140), LibraryFile.MagicEx3, 0, 0, Globals.LightningColour)
+                    {
+                        Blend = true,
+                        Target = this,
+                        Direction = Direction,
+                        DrawColour = attackColour,
+                        Loop = true,
+                    };
+                    ChannellingMagicEffect.FrameIndexAction = () =>
+                    {
+                        if (ChannellingMagicEffect.FrameIndex == 0)
+                            DXSoundManager.Play(SoundIndex.ElementalHurricane);
+
+                    };
+                    ChannellingMagicEffect.Process();
+                }
+                //DXSoundManager.Play(SoundIndex.LightningBeamEnd);
+            }
         }
-        public void DragonRepulseEnd()
+        public void ChannellingMagicEnd()
         {
-            DragonRepulseEffect?.Remove();
-            DragonRepulseEffect = null;
-            DragonRepulseEffect1?.Remove();
-            DragonRepulseEffect1 = null;
+            ChannellingMagicEffect?.Remove();
+            ChannellingMagicEffect = null;
+            ChannellingMagicEffect1?.Remove();
+            ChannellingMagicEffect1 = null;
         }
 
         public void RankingCreate()
@@ -4610,7 +4694,7 @@ namespace Client.Models
             LifeStealEnd();
             SilenceEnd();
             BlindEnd();
-            DragonRepulseEnd();
+            ChannellingMagicEnd();
             RankingEnd();
             DeveloperEnd();
             AssaultEnd();

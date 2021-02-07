@@ -661,8 +661,12 @@ namespace Library
         WeightRate,
         [StatDescription(Title = "MinAC and MinMR have been greatly Increased.", Mode = StatType.Text)]
         Defiance,
-        [StatDescription(Title = "You sacrfice your Defense for Offense.", Mode = StatType.Text)]
+        [StatDescription(Title = "[Aura] You sacrfice your Defense for Offense. (Only one Aura can be active at any one time.)", Mode = StatType.Text)]
         Might,
+        [StatDescription(Title = "Temporarily increase your AC.", Mode = StatType.Text)]
+        IronSkin,
+        [StatDescription(Title = "Temporarily increase your damage at the cost of health.", Mode = StatType.Text)]
+        InnerRage,
         [StatDescription(Title = "Mana", Format = "{0:+#0%;-#0%;#0%}", Mode = StatType.Percent)]
         ManaPercent,
 
@@ -766,6 +770,8 @@ namespace Library
         [StatDescription(Title = "Rebirth ", Format = "{0}", Mode = StatType.Default)]
         Rebirth,
 
+        [StatDescription(Title = "You are immune to all damage.", Mode = StatType.Text)]
+        Invincibility,
 
 
         [StatDescription(Title = "Duration", Mode = StatType.Time)]

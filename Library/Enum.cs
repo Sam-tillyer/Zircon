@@ -199,6 +199,9 @@ namespace Library
         Might = 101,
         Endurance = 102,
         ReflectDamage = 103,
+        InnerRage = 104,
+        IronSkin = 105,
+        Invincibility = 106,
 
         Renounce = 200,
         MagicShield = 201,
@@ -230,6 +233,7 @@ namespace Library
         Evasion = 409,
         RagingWind = 410,
         FrostBite = 411,
+        ElementalHurricane = 412,
 
         MagicWeakness = 500,
     }
@@ -385,7 +389,9 @@ namespace Library
         DragonRepulseStart,
         DragonRepulseMiddle,
         DragonRepulseEnd,
-
+        ChannellingStart,
+        ChannellingMiddle,
+        ChannellingEnd,
     }
     
 
@@ -489,6 +495,9 @@ namespace Library
         AdvancedPotionMastery = 122,
         MassBeckon = 123,
         SeismicSlam = 124,
+        InnerRage = 125,
+        IronSkin = 126,
+        Invincibility = 127,
 
         FireBall = 201,
         LightningBall = 202,
@@ -530,6 +539,7 @@ namespace Library
         AdvancedRenounce = 238,
         FrostBite = 239,
         Asteroid = 240,
+        ElementalHurricane = 241,
 
         Heal = 300,
         SpiritSword = 301,
@@ -1651,7 +1661,7 @@ namespace Library
         ChainLightningEnd,
 
         FrostBiteStart,
-
+        ElementalHurricane,
 
         HealStart,
         HealEnd,
