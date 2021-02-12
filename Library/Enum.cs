@@ -581,8 +581,8 @@ namespace Library
         DemonExplosion = 337,
         Infection = 338,
         DemonicRecovery = 339,
-        Neutralize = 340,
-        AugmentNeutralize = 341,
+        Hinder = 340,
+        AugmentHinder = 341,
         DarkSoulPrison = 342,
         ChainHeal = 343,
 
@@ -1001,7 +1001,7 @@ namespace Library
         Silenced = 64,
         Abyss = 128,
         Infection = 256,
-        Neutralize = 512,
+        Hinder = 512,
     }
 
     public enum SpellEffect
@@ -1723,7 +1723,7 @@ namespace Library
         ChainHealStart,
         ChainHealEnd,
 
-        NeutralizeEnd,
+        HinderEnd,
 
         DarkSoulPrison,
 

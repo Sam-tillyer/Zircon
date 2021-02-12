@@ -12146,7 +12146,7 @@ namespace Server.Models
 
             ActionTime = SEnvir.Now + Globals.TurnTime;
            
-            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (PoisonList.Any(x => x.Type == PoisonType.Hinder))
                 ActionTime += Globals.TurnTime;
 
             Poison poison = PoisonList.FirstOrDefault(x => x.Type == PoisonType.Slow);
@@ -12183,7 +12183,7 @@ namespace Server.Models
             Direction = direction;
             ActionTime = SEnvir.Now + Globals.HarvestTime;
 
-            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (PoisonList.Any(x => x.Type == PoisonType.Hinder))
                 ActionTime += Globals.HarvestTime;
 
             Poison poison = PoisonList.FirstOrDefault(x => x.Type == PoisonType.Slow);
@@ -12401,7 +12401,7 @@ namespace Server.Models
                 return;
             }
 
-            if (distance > 1 && PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (distance > 1 && PoisonList.Any(x => x.Type == PoisonType.Hinder))
                 distance = 1;
 
             Cell cell = null;
@@ -13028,7 +13028,7 @@ namespace Server.Models
                 case MagicType.RagingWind:
                 case MagicType.MassBeckon:
                 case MagicType.Infection:
-                case MagicType.Neutralize:
+                case MagicType.Hinder:
                 case MagicType.DarkSoulPrison:
                     if (magic.Cost > CurrentMP)
                     {
@@ -14558,10 +14558,10 @@ namespace Server.Models
                         ob));
                     break;
 
-                case MagicType.Neutralize:
+                case MagicType.Hinder:
 
                     magics = new List<UserMagic> { magic };
-                    Magics.TryGetValue(MagicType.AugmentNeutralize, out augMagic);
+                    Magics.TryGetValue(MagicType.AugmentHinder, out augMagic);
 
                     realTargets = new HashSet<MapObject>();
 
@@ -14945,7 +14945,7 @@ namespace Server.Models
             ActionTime = SEnvir.Now + Globals.CastTime;
             MagicTime = SEnvir.Now + Globals.MagicDelay;
 
-            if (BagWeight > Stats[Stat.BagWeight] || PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (BagWeight > Stats[Stat.BagWeight] || PoisonList.Any(x => x.Type == PoisonType.Hinder))
                 MagicTime += Globals.MagicDelay;
 
             Poison poison = PoisonList.FirstOrDefault(x => x.Type == PoisonType.Slow);
@@ -15158,7 +15158,7 @@ namespace Server.Models
                 ActionTime += slow;
             }
 
-            if (BagWeight > Stats[Stat.BagWeight] || PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (BagWeight > Stats[Stat.BagWeight] || PoisonList.Any(x => x.Type == PoisonType.Hinder))
                 AttackTime += TimeSpan.FromMilliseconds(attackDelay);
 
             bool result = false;
@@ -16770,8 +16770,8 @@ namespace Server.Models
                     case MagicType.Infection:
                         InfectionEnd(magics, (MapObject)data[1]);
                         break;
-                    case MagicType.Neutralize:
-                        NeutralizeEnd(magics, (MapObject)data[1]);
+                    case MagicType.Hinder:
+                        HinderEnd(magics, (MapObject)data[1]);
                         break;
                     case MagicType.DarkSoulPrison:
                         DarkSoulPrisonEnd(magic, (Point)data[1], (int)data[2]);
@@ -18726,13 +18726,13 @@ namespace Server.Models
             foreach (UserMagic mag in magics)
                 LevelMagic(mag);
         }
-        public void NeutralizeEnd(List<UserMagic> magics, MapObject ob)
+        public void HinderEnd(List<UserMagic> magics, MapObject ob)
         {
-            if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Neutralize) == PoisonType.Neutralize) return;
+            if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Hinder) == PoisonType.Hinder) return;
 
             if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Silenced) == PoisonType.Silenced) return;
 
-            UserMagic magic = magics.FirstOrDefault(x => x.Info.Magic == MagicType.Neutralize);
+            UserMagic magic = magics.FirstOrDefault(x => x.Info.Magic == MagicType.Hinder);
             if (magic == null) return;
 
             int time = 5 + magic.Level;
@@ -18741,15 +18741,7 @@ namespace Server.Models
 
             ob.ApplyPoison(new Poison
             {
-                Type = PoisonType.Neutralize,
-                Owner = this,
-                TickCount = time,
-                TickFrequency = TimeSpan.FromSeconds(1),
-            });
-
-            ob.ApplyPoison(new Poison
-            {
-                Type = PoisonType.Silenced,
+                Type = PoisonType.Hinder,
                 Owner = this,
                 TickCount = time,
                 TickFrequency = TimeSpan.FromSeconds(1),

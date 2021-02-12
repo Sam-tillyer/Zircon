@@ -2970,7 +2970,7 @@ namespace Client.Scenes
                 case MagicType.GreaterEvilSlayer:
                 case MagicType.ImprovedExplosiveTalisman:
                 case MagicType.Infection:
-                case MagicType.Neutralize:
+                case MagicType.Hinder:
                     //Has Target
                     if (CanAttackTarget(MagicObject))
                         target = MagicObject;
@@ -3152,7 +3152,7 @@ namespace Client.Scenes
                 case MagicType.ExplosiveTalisman:
                 case MagicType.ImprovedExplosiveTalisman:
                 case MagicType.PoisonDust:
-                case MagicType.Neutralize:
+                case MagicType.Hinder:
                     targetLocation = MapControl.MapLocation;
                     break;
                 default:

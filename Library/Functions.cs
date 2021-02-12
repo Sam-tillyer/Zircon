@@ -214,7 +214,7 @@ namespace Library
                 case MagicType.BloodLust:
                 case MagicType.LifeSteal:
                 case MagicType.ImprovedExplosiveTalisman:
-                case MagicType.Neutralize:
+                case MagicType.Hinder:
                     return MirAnimation.Combat1;
 
 

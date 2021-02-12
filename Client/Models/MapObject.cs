@@ -238,7 +238,7 @@ namespace Client.Models
         public Color LightColour = Globals.NoneColour;
 
         public MirEffect MagicShieldEffect, WraithGripEffect, WraithGripEffect2, AssaultEffect, CelestialLightEffect, LifeStealEffect, SilenceEffect, BlindEffect, AbyssEffect, ChannellingMagicEffect, ChannellingMagicEffect1,
-                         RankingEffect, DeveloperEffect, FrostBiteEffect, InfectionEffect, NeutralizeEffect;
+                         RankingEffect, DeveloperEffect, FrostBiteEffect, InfectionEffect, HinderEffect;
 
         public bool CanShowWraithGrip = true;
 
@@ -396,15 +396,15 @@ namespace Client.Models
                     InfectionEnd();
             }
 
-            if ((Poison & PoisonType.Neutralize) == PoisonType.Neutralize)
+            if ((Poison & PoisonType.Hinder) == PoisonType.Hinder)
             {
-                if (NeutralizeEffect == null)
-                    NeutralizeCreate();
+                if (HinderEffect == null)
+                    HinderCreate();
             }
             else
             {
-                if (NeutralizeEffect != null)
-                    NeutralizeEnd();
+                if (HinderEffect != null)
+                    HinderEnd();
             }
 
             if (VisibleBuffs.Contains(BuffType.Invisibility) || VisibleBuffs.Contains(BuffType.Cloak) || VisibleBuffs.Contains(BuffType.Transparency) || VisibleBuffs.Contains(BuffType.ClearRing))
@@ -1967,9 +1967,9 @@ namespace Client.Models
 
                         #endregion
 
-                        #region Neutralize
+                        #region Hinder
 
-                        case MagicType.Neutralize:
+                        case MagicType.Hinder:
                             foreach (Point point in MagicLocations)
                             {
                                 Effects.Add(spell = new MirProjectile(300, 4, TimeSpan.FromMilliseconds(80), LibraryFile.MagicEx7, 35, 35, Globals.FireColour, CurrentLocation)
@@ -1997,7 +1997,7 @@ namespace Client.Models
                                     });
                                     spell.Process();
 
-                                    DXSoundManager.Play(SoundIndex.NeutralizeEnd);
+                                    DXSoundManager.Play(SoundIndex.HinderEnd);
                                 };
                                 spell.Process();
                             }
@@ -3667,7 +3667,7 @@ namespace Client.Models
 
                         #endregion
 
-                        //Neutralize
+                        //Hinder
 
                         #region Dark Soul Prison
 
@@ -4580,9 +4580,9 @@ namespace Client.Models
             InfectionEffect = null;
         }
 
-        public void NeutralizeCreate()
+        public void HinderCreate()
         {
-            NeutralizeEffect = new MirEffect(470, 6, TimeSpan.FromMilliseconds(120), LibraryFile.MagicEx7, 0, 0, Globals.NoneColour)
+            HinderEffect = new MirEffect(470, 6, TimeSpan.FromMilliseconds(120), LibraryFile.MagicEx7, 0, 0, Globals.NoneColour)
             {
                 Blend = true,
                 Target = this,
@@ -4590,10 +4590,10 @@ namespace Client.Models
                 Opacity = 0.8F
             };
         }
-        public void NeutralizeEnd()
+        public void HinderEnd()
         {
-            NeutralizeEffect?.Remove();
-            NeutralizeEffect = null;
+            HinderEffect?.Remove();
+            HinderEffect = null;
         }
 
         public void ChannellingMagicCreate()

@@ -2257,7 +2257,7 @@ namespace Server.Models
                 ActionTime += TimeSpan.FromMilliseconds(poison.Value * 100);
             }
 
-            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (PoisonList.Any(x => x.Type == PoisonType.Hinder))
             {
                 AttackTime += TimeSpan.FromMilliseconds(AttackDelay);
                 ActionTime += TimeSpan.FromMilliseconds(Math.Min(MoveDelay, AttackDelay - 100));
@@ -2275,7 +2275,7 @@ namespace Server.Models
                 ActionTime += TimeSpan.FromMilliseconds(poison.Value * 100);
             }
 
-            if (PoisonList.Any(x => x.Type == PoisonType.Neutralize))
+            if (PoisonList.Any(x => x.Type == PoisonType.Hinder))
             {
                 AttackTime += TimeSpan.FromMilliseconds(MoveDelay);
                 ActionTime += TimeSpan.FromMilliseconds(Math.Min(MoveDelay - 100, AttackDelay));
