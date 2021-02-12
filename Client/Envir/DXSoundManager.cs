@@ -930,6 +930,14 @@ namespace Client.Envir
             [SoundIndex.BlueDragonStruck] = new DXSound(SoundPath + @"403-4.wav", SoundType.Monster),
             [SoundIndex.BlueDragonDie] = new DXSound(SoundPath + @"403-5.wav", SoundType.Monster),
 
+            [SoundIndex.HybridAssassinAttack] = new DXSound(SoundPath + @"266-2.wav", SoundType.Monster),
+            [SoundIndex.HybridAssassinStruck] = new DXSound(SoundPath + @"266-4.wav", SoundType.Monster),
+            [SoundIndex.HybridAssassinDie] = new DXSound(SoundPath + @"266-5.wav", SoundType.Monster),
+
+            [SoundIndex.FirebirdAttack] = new DXSound(SoundPath + @"266-2.wav", SoundType.Monster),
+            [SoundIndex.FirebirdStruck] = new DXSound(SoundPath + @"266-4.wav", SoundType.Monster),
+            [SoundIndex.FirebirdDie] = new DXSound(SoundPath + @"266-5.wav", SoundType.Monster),
+
             #endregion
         };
 

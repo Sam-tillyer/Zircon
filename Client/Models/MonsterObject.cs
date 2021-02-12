@@ -2042,6 +2042,23 @@ namespace Client.Models
                     //Fuckjed up Mob
 
                     break;
+
+                case MonsterImage.HybridAssassin:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_56, out BodyLibrary);
+                    BodyShape = 3;
+                    AttackSound = SoundIndex.HybridAssassinAttack;
+                    StruckSound = SoundIndex.HybridAssassinStruck;
+                    DieSound = SoundIndex.HybridAssassinDie;
+                    break;
+
+                case MonsterImage.Firebird:
+                    CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_35, out BodyLibrary);
+                    BodyShape = 8;
+                    AttackSound = SoundIndex.FirebirdAttack;
+                    StruckSound = SoundIndex.FirebirdStruck;
+                    DieSound = SoundIndex.FirebirdDie;
+                    break;
+
                 default:
                     CEnvir.LibraryList.TryGetValue(LibraryFile.Mon_1, out BodyLibrary);
                     BodyShape = 0;

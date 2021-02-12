@@ -942,6 +942,9 @@ namespace Library
         MonasteryMon4,
         MonasteryMon5,
         MonasteryMon6,
+
+        HybridAssassin,
+        Firebird,
     }
 
     
@@ -1901,6 +1904,7 @@ namespace Library
         WasHatchlingStruck,
         WasHatchlingDie,
 
+        
         CentipedeAttack,
         CentipedeStruck,
         CentipedeDie,
@@ -2399,8 +2403,13 @@ namespace Library
         WhiteTigerStruck,
         WhiteTigerDie,
 
+        HybridAssassinAttack,
+        HybridAssassinStruck,
+        HybridAssassinDie,
 
-
+        FirebirdAttack,
+        FirebirdStruck,
+        FirebirdDie,
 
         #endregion
 

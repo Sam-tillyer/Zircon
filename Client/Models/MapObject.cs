@@ -341,7 +341,10 @@ namespace Client.Models
             
             if ((Poison & PoisonType.Green) == PoisonType.Green)
                 DrawColour = Color.SeaGreen;
-            
+
+            if ((Poison & PoisonType.HellFire) == PoisonType.HellFire)
+                DrawColour = Color.Yellow;
+
             if ((Poison & PoisonType.Slow) == PoisonType.Slow)
                 DrawColour = Color.CornflowerBlue;
 
@@ -2789,11 +2792,23 @@ namespace Client.Models
 
                         #endregion
 
-                        #region Defiance, Invincibility
+                        #region Defiance
 
                         case MagicType.Defiance:
-                        case MagicType.Invincibility:
                             Effects.Add(new MirEffect(40, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
+                            {
+                                Blend = true,
+                                Target = this,
+                            });
+                            DXSoundManager.Play(SoundIndex.DefianceStart);
+                            break;
+
+                        #endregion
+
+                        #region Invincibility
+
+                        case MagicType.Invincibility:
+                            Effects.Add(new MirEffect(120, 12, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
                             {
                                 Blend = true,
                                 Target = this,
@@ -2847,7 +2862,7 @@ namespace Client.Models
                         #region Inner Rage
 
                         case MagicType.InnerRage:
-                            Effects.Add(new MirEffect(60, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
+                            Effects.Add(new MirEffect(0, 19, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx2, 60, 60, Globals.NoneColour)
                             {
                                 Blend = true,
                                 Target = this,
@@ -4365,6 +4380,9 @@ namespace Client.Models
 
             if ((Poison & PoisonType.Green) == PoisonType.Green)
                 DXManager.Sprite.Draw(DXManager.PoisonTexture, Vector3.Zero, new Vector3(DrawX + count * 5, DrawY - 50, 0), Color.SeaGreen);
+
+            if ((Poison & PoisonType.HellFire) == PoisonType.HellFire)
+                DXManager.Sprite.Draw(DXManager.PoisonTexture, Vector3.Zero, new Vector3(DrawX + count * 5, DrawY - 50, 0), Color.Yellow);
         }
         public virtual void DrawHealth()
         {

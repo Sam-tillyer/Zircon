@@ -15617,7 +15617,7 @@ namespace Server.Models
             if (Buffs.Any(x => x.Type == BuffType.Might) && Magics.TryGetValue(MagicType.Might, out magic))
                 LevelMagic(magic);
 
-            if (Buffs.Any(x => x.Type == BuffType.IronSkin) && Magics.TryGetValue(MagicType.Might, out magic))
+            if (Buffs.Any(x => x.Type == BuffType.IronSkin) && Magics.TryGetValue(MagicType.IronSkin, out magic))
                 LevelMagic(magic);
 
             if (Buffs.Any(x => x.Type == BuffType.InnerRage) && Magics.TryGetValue(MagicType.InnerRage, out magic))
@@ -17918,13 +17918,14 @@ namespace Server.Models
             Stats buffStats = new Stats
             {
                 [Stat.DCPercent] = value,
-                [Stat.Health] = -Stats[Stat.Health] / 2
+                [Stat.Health] = -Stats[Stat.Health] / 2,
+                [Stat.ParalysisChance] = 200
             };
 
             BuffAdd(BuffType.InnerRage, TimeSpan.FromSeconds(magic.Level * 4 + 6), buffStats, false, false, TimeSpan.Zero);
 
-            magic.Cooldown = SEnvir.Now.AddSeconds(90);
-            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 90000 });
+            magic.Cooldown = SEnvir.Now.AddSeconds(5);
+            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 5 });
 
             LevelMagic(magic);
         }
@@ -18729,6 +18730,8 @@ namespace Server.Models
         {
             if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Neutralize) == PoisonType.Neutralize) return;
 
+            if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Silenced) == PoisonType.Silenced) return;
+
             UserMagic magic = magics.FirstOrDefault(x => x.Info.Magic == MagicType.Neutralize);
             if (magic == null) return;
 
@@ -18739,6 +18742,14 @@ namespace Server.Models
             ob.ApplyPoison(new Poison
             {
                 Type = PoisonType.Neutralize,
+                Owner = this,
+                TickCount = time,
+                TickFrequency = TimeSpan.FromSeconds(1),
+            });
+
+            ob.ApplyPoison(new Poison
+            {
+                Type = PoisonType.Silenced,
                 Owner = this,
                 TickCount = time,
                 TickFrequency = TimeSpan.FromSeconds(1),
@@ -18852,21 +18863,6 @@ namespace Server.Models
 
             if (Buffs.Any(x => x.Type == BuffType.StrengthOfFaith))
                 ob.Magics.Add(Magics[MagicType.StrengthOfFaith]);
-
-            if (ob.PetOwner.Buffs.Any(x => x.Type == BuffType.Resilience))
-                ob.Magics.Add(Magics[MagicType.Resilience]);
-
-            if (Buffs.Any(x => x.Type == BuffType.MagicResistance))
-                ob.Magics.Add(Magics[MagicType.MagicResistance]);
-
-            if (Buffs.Any(x => x.Type == BuffType.BloodLust))
-                ob.Magics.Add(Magics[MagicType.BloodLust]);
-
-            if (Buffs.Any(x => x.Type == BuffType.LifeSteal))
-                ob.Magics.Add(Magics[MagicType.LifeSteal]);
-
-            if (Buffs.Any(x => x.Type == BuffType.ElementalSuperiority))
-                ob.Magics.Add(Magics[MagicType.ElementalSuperiority]);
 
             if (magic.Info.Magic == MagicType.SummonDemonicCreature && Magics.TryGetValue(MagicType.DemonicRecovery, out UserMagic demonRecovery))
                 ob.Magics.Add(demonRecovery);
