@@ -2007,6 +2007,23 @@ namespace Client.Models
 
                         #endregion
 
+                        #region Tranquil Mind
+
+                        case MagicType.TranquilMind:
+                            foreach (MapObject attackTarget in AttackTargets)
+                            {
+                                attackTarget.Effects.Add(spell = new MirEffect(1630, 18, TimeSpan.FromMilliseconds(100), LibraryFile.MonMagicEx, 35, 35, Globals.FireColour)
+                                {
+                                    Blend = true,
+                                    Target = attackTarget,
+                                });
+                                spell.Process();
+                            }
+
+                            break;
+
+                        #endregion
+
 
                         #endregion
 
@@ -3668,6 +3685,8 @@ namespace Client.Models
                         #endregion
 
                         //Hinder
+
+                        //Tranquil Mind
 
                         #region Dark Soul Prison
 

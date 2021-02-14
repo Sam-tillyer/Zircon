@@ -13029,6 +13029,7 @@ namespace Server.Models
                 case MagicType.MassBeckon:
                 case MagicType.Infection:
                 case MagicType.Hinder:
+                case MagicType.TranquilMind:
                 case MagicType.DarkSoulPrison:
                     if (magic.Cost > CurrentMP)
                     {
@@ -14617,6 +14618,7 @@ namespace Server.Models
                         locations.Add(p.Location);
 
                     break;
+
                 case MagicType.DarkSoulPrison:
                     ob = null;
 
@@ -14634,6 +14636,61 @@ namespace Server.Models
                         p.Location,
                         power));
                     break;
+
+                case MagicType.TranquilMind:
+
+                    magics = new List<UserMagic> { magic };
+                    Magics.TryGetValue(MagicType.AugmentTranquilMind, out augMagic);
+
+                    realTargets = new HashSet<MapObject>();
+
+                    if (CanAttackTarget(ob))
+                        realTargets.Add(ob);
+
+                    if (augMagic != null && SEnvir.Now > augMagic.Cooldown && Level >= augMagic.Info.NeedLevel1)
+                    {
+                        magics.Add(augMagic);
+                        power = augMagic.GetPower() + 1;
+                        possibleTargets = GetTargets(CurrentMap, p.Location, 2);
+
+                        while (power >= realTargets.Count)
+                        {
+                            if (possibleTargets.Count == 0) break;
+
+                            MapObject target = possibleTargets[SEnvir.Random.Next(possibleTargets.Count)];
+
+                            possibleTargets.Remove(target);
+
+                            if (!Functions.InRange(CurrentLocation, target.CurrentLocation, Globals.MagicRange)) continue;
+
+                            realTargets.Add(target);
+                        }
+                    }
+
+                    count = -1;
+                    foreach (MapObject target in realTargets)
+                    {
+                        if (!UseAmulet(1, 0, out stats))
+                            break;
+
+                        if (augMagic != null)
+                            count++;
+
+                        targets.Add(target.ObjectID);
+                        ActionList.Add(new DelayedAction(
+                            SEnvir.Now.AddMilliseconds(0 + Functions.Distance(CurrentLocation, target.CurrentLocation)),
+                            ActionType.DelayMagic,
+                            magics,
+                            target,
+                            target == ob,
+                            stats));
+                    }
+
+                    if (ob == null)
+                        locations.Add(p.Location);
+
+                    break;
+
 
                 #endregion
 
@@ -16773,6 +16830,9 @@ namespace Server.Models
                     case MagicType.Hinder:
                         HinderEnd(magics, (MapObject)data[1]);
                         break;
+                    case MagicType.TranquilMind:
+                        TranquilMindEnd(magics, (MapObject)data[1]);
+                        break;
                     case MagicType.DarkSoulPrison:
                         DarkSoulPrisonEnd(magic, (Point)data[1], (int)data[2]);
                         break;
@@ -18730,8 +18790,6 @@ namespace Server.Models
         {
             if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Hinder) == PoisonType.Hinder) return;
 
-            if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Silenced) == PoisonType.Silenced) return;
-
             UserMagic magic = magics.FirstOrDefault(x => x.Info.Magic == MagicType.Hinder);
             if (magic == null) return;
 
@@ -18750,6 +18808,32 @@ namespace Server.Models
             foreach (UserMagic mag in magics)
                 LevelMagic(mag);
         }
+
+        public void TranquilMindEnd(List<UserMagic> magics, MapObject ob)
+        {
+            if (ob?.Node == null || !CanAttackTarget(ob) || ob.Level >= Level || (ob.Poison & PoisonType.Silenced) == PoisonType.Silenced) return;
+
+            UserMagic magic = magics.FirstOrDefault(x => x.Info.Magic == MagicType.TranquilMind);
+            if (magic == null) return;
+
+            int time = 5 + magic.Level;
+            if (ob.Race == ObjectType.Player)
+                time = (int)(time * 0.8);
+
+            ob.ApplyPoison(new Poison
+            {
+                Type = PoisonType.Silenced,
+                Owner = this,
+                TickCount = time,
+                TickFrequency = TimeSpan.FromSeconds(1),
+            });
+
+            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 30000 });
+
+            foreach (UserMagic mag in magics)
+                LevelMagic(mag);
+        }
+
         public void TrapOctagonEnd(UserMagic magic, Map map, Point location)
         {
             if (map != CurrentMap) return;

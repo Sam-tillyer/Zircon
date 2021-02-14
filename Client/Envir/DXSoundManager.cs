@@ -264,6 +264,8 @@ namespace Client.Envir
 
             [SoundIndex.HinderEnd] = new DXSound(SoundPath + @"m138-2.wav", SoundType.Magic),
 
+            [SoundIndex.TranquilMindEnd] = new DXSound(SoundPath + @"m138-2.wav", SoundType.Magic),
+
             [SoundIndex.DarkSoulPrison] = new DXSound(SoundPath + @"m136-2.wav", SoundType.Magic),
 
             [SoundIndex.PoisonousCloudStart] = new DXSound(SoundPath + @"as_157-1.wav", SoundType.Magic),

@@ -585,6 +585,8 @@ namespace Library
         AugmentHinder = 341,
         DarkSoulPrison = 342,
         ChainHeal = 343,
+        TranquilMind = 344,
+        AugmentTranquilMind = 345,
 
         WillowDance = 401,
         VineTreeDance = 402,
@@ -1724,6 +1726,7 @@ namespace Library
         ChainHealEnd,
 
         HinderEnd,
+        TranquilMindEnd,
 
         DarkSoulPrison,
 
