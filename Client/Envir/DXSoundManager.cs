@@ -123,8 +123,9 @@ namespace Client.Envir
 
             [SoundIndex.SwiftBladeEnd] = new DXSound(SoundPath + @"M131-2.wav", SoundType.Magic),
 
+            [SoundIndex.InnerRageEnd] = new DXSound(SoundPath + @"388-7.wav", SoundType.Magic),
 
-
+            [SoundIndex.IronSkinEnd] = new DXSound(SoundPath + @"388-7.wav", SoundType.Magic),
 
             [SoundIndex.FireBallStart] = new DXSound(SoundPath + @"M1-1.wav", SoundType.Magic),
             [SoundIndex.FireBallTravel] = new DXSound(SoundPath + @"M1-2.wav", SoundType.Magic),
@@ -262,7 +263,7 @@ namespace Client.Envir
             [SoundIndex.StrengthOfFaithStart] = new DXSound(SoundPath + @"M123-1.wav", SoundType.Magic),
             [SoundIndex.StrengthOfFaithEnd] = new DXSound(SoundPath + @"M123-3.wav", SoundType.Magic),
 
-            [SoundIndex.HinderEnd] = new DXSound(SoundPath + @"m138-2.wav", SoundType.Magic),
+            [SoundIndex.HinderEnd] = new DXSound(SoundPath + @"m120-3.wav", SoundType.Magic),
 
             [SoundIndex.TranquilMindEnd] = new DXSound(SoundPath + @"m138-2.wav", SoundType.Magic),
 

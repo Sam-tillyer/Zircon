@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Library
 {
@@ -214,11 +211,8 @@ namespace Library
                 case MagicType.BloodLust:
                 case MagicType.LifeSteal:
                 case MagicType.ImprovedExplosiveTalisman:
-                case MagicType.Hinder:
                 case MagicType.TranquilMind:
                     return MirAnimation.Combat1;
-
-
 
                 case MagicType.Interchange:
                     
@@ -267,6 +261,7 @@ namespace Library
                 case MagicType.DemonExplosion:
                 case MagicType.Scarecrow:
                 case MagicType.DarkSoulPrison:
+                case MagicType.Hinder:
                     return MirAnimation.Combat2;
 
                 case MagicType.PoisonousCloud:

@@ -1970,38 +1970,17 @@ namespace Client.Models
                         #region Hinder
 
                         case MagicType.Hinder:
-                            foreach (Point point in MagicLocations)
-                            {
-                                Effects.Add(spell = new MirProjectile(300, 4, TimeSpan.FromMilliseconds(80), LibraryFile.MagicEx7, 35, 35, Globals.FireColour, CurrentLocation)
-                                {
-                                    Blend = true,
-                                    MapTarget = point,
-                                });
-                                spell.Process();
-                            }
-
                             foreach (MapObject attackTarget in AttackTargets)
                             {
-                                Effects.Add(spell = new MirProjectile(300, 4, TimeSpan.FromMilliseconds(80), LibraryFile.MagicEx7, 35, 35, Globals.FireColour, CurrentLocation)
+                                attackTarget.Effects.Add(spell = new MirEffect(700, 10, TimeSpan.FromMilliseconds(80), LibraryFile.MonMagicEx3, 35, 35, Globals.FireColour)
                                 {
                                     Blend = true,
                                     Target = attackTarget,
                                 });
 
-                                spell.CompleteAction = () =>
-                                {
-                                    attackTarget.Effects.Add(spell = new MirEffect(460, 10, TimeSpan.FromMilliseconds(100), LibraryFile.MagicEx7, 0, 0, Globals.FireColour)
-                                    {
-                                        Blend = true,
-                                        Target = attackTarget,
-                                    });
-                                    spell.Process();
-
-                                    DXSoundManager.Play(SoundIndex.HinderEnd);
-                                };
                                 spell.Process();
                             }
-
+                            DXSoundManager.Play(SoundIndex.HinderEnd);
 
                             break;
 
@@ -2019,7 +1998,7 @@ namespace Client.Models
                                 });
                                 spell.Process();
                             }
-
+                            DXSoundManager.Play(SoundIndex.TranquilMindEnd);
                             break;
 
                         #endregion
@@ -2884,7 +2863,7 @@ namespace Client.Models
                                 Blend = true,
                                 Target = this,
                             });
-                            DXSoundManager.Play(SoundIndex.DragonRise); //Same file as Beckon
+                            DXSoundManager.Play(SoundIndex.InnerRageEnd); //Same file as Beckon
                             break;
 
                         #endregion
@@ -4601,7 +4580,7 @@ namespace Client.Models
 
         public void HinderCreate()
         {
-            HinderEffect = new MirEffect(470, 6, TimeSpan.FromMilliseconds(120), LibraryFile.MagicEx7, 0, 0, Globals.NoneColour)
+            HinderEffect = new MirEffect(1700, 10, TimeSpan.FromMilliseconds(120), LibraryFile.MonMagicEx4, 0, 0, Globals.NoneColour)
             {
                 Blend = true,
                 Target = this,

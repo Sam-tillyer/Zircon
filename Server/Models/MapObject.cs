@@ -215,10 +215,6 @@ namespace Server.Models
                 MonsterObject mob;
                 switch (poison.Type)
                 {
-                    case PoisonType.Silenced:
-                        if (Race == ObjectType.Monster && ((MonsterObject)this).MonsterInfo.IsBoss)
-                            poison.Value = 0;
-                        break;
                     case PoisonType.Green:
                         damage += poison.Value;
                         break;
