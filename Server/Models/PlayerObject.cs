@@ -14600,7 +14600,7 @@ namespace Server.Models
 
                         targets.Add(target.ObjectID);
                         ActionList.Add(new DelayedAction(
-                            SEnvir.Now.AddMilliseconds(0 + Functions.Distance(CurrentLocation, target.CurrentLocation)),
+                            SEnvir.Now.AddMilliseconds(1400 + Functions.Distance(CurrentLocation, target.CurrentLocation) * 48),
                             ActionType.DelayMagic,
                             magics,
                             target,
@@ -14678,7 +14678,7 @@ namespace Server.Models
 
                         targets.Add(target.ObjectID);
                         ActionList.Add(new DelayedAction(
-                            SEnvir.Now.AddMilliseconds(500 + Functions.Distance(CurrentLocation, target.CurrentLocation) * 48),
+                            SEnvir.Now.AddMilliseconds(0 + Functions.Distance(CurrentLocation, target.CurrentLocation)),
                             ActionType.DelayMagic,
                             magics,
                             target,
@@ -18805,8 +18805,6 @@ namespace Server.Models
                 TickFrequency = TimeSpan.FromSeconds(1),
             });
 
-            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 65000 - magic.Level * 5000 });
-
             foreach (UserMagic mag in magics)
                 LevelMagic(mag);
         }
@@ -18830,7 +18828,7 @@ namespace Server.Models
                 TickFrequency = TimeSpan.FromSeconds(1),
             });
 
-            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 65000 - magic.Level * 5000 });
+            Enqueue(new S.MagicCooldown { InfoIndex = magic.Info.Index, Delay = 30000 });
 
             foreach (UserMagic mag in magics)
                 LevelMagic(mag);

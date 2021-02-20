@@ -1588,8 +1588,6 @@ namespace Library
 
         SwiftBladeEnd,
 
-        InnerRageEnd,
-        IronSkinEnd,
 
         FireBallStart,
         FireBallTravel,
