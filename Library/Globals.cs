@@ -1081,11 +1081,6 @@ namespace Library
         public Stats Level11 { get; set; }
         public Stats Level13 { get; set; }
         public Stats Level15 { get; set; }
-        public Stats Level17 { get; set; }
-        public Stats Level19 { get; set; }
-        public Stats Level21 { get; set; }
-        public Stats Level23 { get; set; }
-        public Stats Level25 { get; set; }
 
         public string CharacterName { get; set; }
 
